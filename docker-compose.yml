@@ -1,0 +1,20 @@
+application:
+  build: application/
+  ports:
+    - 17017:17017
+  links:
+    - redis
+  volumes:
+    - ./application/code:/var/www
+
+nginx:
+  build: nginx/
+  ports:
+    - 8080:80
+  volumes_from:
+    - application
+  environment:
+    <APP_SERVER_NAME>: dev-machine
+
+redis:
+  image: redis:2.8.13

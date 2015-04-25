@@ -1,0 +1,45 @@
+{
+    "name": "rybbow/sesp",
+    "license": "proprietary",
+    "type": "project",
+    "authors": [
+        {"name": "Michał Rybnik", "email": "rybbow@gmail.com"}
+    ],
+    "autoload": {
+        "psr-4": {
+            "Rybbow\\": "src/"
+        }
+    },
+    "require": {
+        "php":                                              ">=5.6.7",
+
+        "roave/security-advisories":                        "dev-master",
+
+        "symfony/monolog-bundle":                           "~2.7",
+
+        "beberlei/assert":                                  "~2.3",
+
+        "rhumsaa/uuid":                                     "~2.8",
+
+        "cboden/ratchet":                                   "~0.3.2"
+    },
+    "require-dev": {
+        "phpspec/phpspec":                                  "~2.1",
+        "bossa/phpspec2-expect":                            "~1.0",
+        "henrikbjorn/phpspec-code-coverage":                "~1.0"
+    },
+    "scripts": {
+        "post-root-package-install": [
+        ],
+        "post-install-cmd": [
+        ],
+        "post-update-cmd": [
+        ]
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "extra": {
+    },
+    "minimum-stability": "stable"
+}

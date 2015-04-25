@@ -1,0 +1,93 @@
+<!doctype html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+
+        <title>SESP - loading</title>
+        <meta name="description" content="SESP bootstrap page">
+        <meta name="author" content="Rybbow">
+    </head>
+
+    <body>
+        <script src="http://autobahn.s3.amazonaws.com/js/autobahn.min.js"></script>
+        <script>
+            (function(output) {
+                output.log('Connecting...');
+
+//                #Native
+//                var conn = new WebSocket('ws://0.0.0.0:17017');
+//                conn.onopen = function(e) {
+//                    output.log("Connection established!");
+//                    conn.send(JSON.stringify({"text": "DUPA"}));
+//                };
+//
+//                conn.onmessage = function(e) {
+//                    output.log(JSON.parse(e.data));
+//                };
+//                conn.onclose = function() {
+//                    output.warn('WebSocket connection closed');
+//                };
+
+
+//                  # AB 0.8
+//                ab.debug(true, true);
+                var conn = ab.connect('ws://0.0.0.0:17017',
+                    function(session) {
+
+                        var handler = session._websocket.onmessage || function() {};
+
+                        session._websocket.onmessage = function(e) {
+                            output.log(JSON.parse(e.data));
+
+                            return handler(e);
+                        };
+
+                        output.log("Connection established!");
+                        var handshake = {
+                            'id': 'SomeUserId',
+                            'token': 'SomeSessionId',
+                            'channel': '__handshake'
+                        };
+                        session.subscribe(JSON.stringify(handshake), function(topic, data) {
+
+                            output.log('Received "' + topic + '" data: ' + data);
+
+//                                session.publish('message_bus', {
+//                                    '@context': {'type': 'TestCommand'},
+//                                    'data': {'message': 'Test message'}
+//                                });
+//                                session.publish('message_bus', {
+//                                    '@context': {'type': 'TestQuery'},
+//                                    'data': {'@iri': 'http://sesp.com/test/1'}
+//                                });
+//                                session.publish('event_bus', {
+//                                    '@context': {'type': 'TestEvent'},
+//                                    'data': {'message': 'Test event'}
+//                                });
+                        });
+                    },
+                    function() {
+                        console.warn('WebSocket connection closed');
+                    },
+                    {
+                        'skipSubprotocolCheck': true,
+                        'maxRetries': 60,
+                        'retryDelay': 2000
+                    }
+                );
+
+//                  # AB 1.x
+//                var connection = new autobahn.Connection({
+//                    'url': 'ws://0.0.0.0:17017'
+//                });//
+//                connection.onopen = function(session) {
+//                    output.log('Connected');
+//                        };
+//                connection.onclose = function() {
+//                    output.warn('WebSocket connection closed');
+//                };
+            })(console);
+        </script>
+    </body>
+</html>
